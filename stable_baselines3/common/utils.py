@@ -116,6 +116,8 @@ def get_pw_fn(step_values: List[Tuple[int, int]], end_fraction: float) -> Schedu
                 return epsilon 
         return step_values[num_steps][1]
 
+    return func
+
 def get_linear_fn(start: float, end: float, end_fraction: float) -> Schedule:
     """
     Create a function that interpolates linearly between start and end
