@@ -95,7 +95,7 @@ def get_schedule_fn(value_schedule: Union[Schedule, float]) -> Schedule:
     return value_schedule
 
 
-def get_pw_fn(step_values: List[(int, int)], end_fraction: float) -> Schedule:
+def get_pw_fn(step_values: List[Tuple[int, int]], end_fraction: float) -> Schedule:
     """
     Create a function that steps down peicewise between start and end
     between ``progress_remaining`` = 1 and ``progress_remaining`` = ``end_fraction``.
