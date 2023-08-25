@@ -95,6 +95,27 @@ def get_schedule_fn(value_schedule: Union[Schedule, float]) -> Schedule:
     return value_schedule
 
 
+def get_pw_fn(step_values: List[(int, int)], end_fraction: float) -> Schedule:
+    """
+    Create a function that steps down peicewise between start and end
+    between ``progress_remaining`` = 1 and ``progress_remaining`` = ``end_fraction``.
+    This is used in DQN for peicewise annealing the exploration fraction
+    (epsilon for the epsilon-greedy strategy).
+
+    :params start: value to start with if ``progress_remaining`` = 1
+    :params end: value to end with if ``progress_remaining`` = 0
+    :params end_fraction: fraction of ``progress_remaining``
+        where end is reached e.g 0.1 then end is reached after 10%
+        of the complete training process.
+    :return: Peicewise schedule function.
+    """
+    def func(progress_remaining: float) -> float:
+        num_steps = len(step_values) - 1
+        for time, epsilon in step_values:
+            if time < 1 - progress_remaining:
+                return epsilon 
+        return step_values[num_steps][1]
+
 def get_linear_fn(start: float, end: float, end_fraction: float) -> Schedule:
     """
     Create a function that interpolates linearly between start and end
@@ -536,7 +557,7 @@ def get_system_info(print_info: bool = True) -> Tuple[Dict[str, str], str]:
         "Gymnasium": gym.__version__,
     }
     try:
-        import gym as openai_gym  # pytype: disable=import-error
+        import gymnasium as openai_gym  # pytype: disable=import-error
 
         env_info.update({"OpenAI Gym": openai_gym.__version__})
     except ImportError:
