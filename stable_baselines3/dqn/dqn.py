@@ -49,6 +49,7 @@ class DQN(OffPolicyAlgorithm):
     :param exploration_fraction: fraction of entire training period over which the exploration rate is reduced
     :param exploration_initial_eps: initial value of random action probability
     :param exploration_final_eps: final value of random action probability
+    :param pw_exploration: list of (time, epsilon) denoting time steps to anneal epsilon
     :param max_grad_norm: The maximum value for the gradient clipping
     :param stats_window_size: Window size for the rollout logging, specifying the number of episodes to average
         the reported success rate, mean episode length, and mean reward over
@@ -92,7 +93,7 @@ class DQN(OffPolicyAlgorithm):
         exploration_fraction: float = 0.1,
         exploration_initial_eps: float = 1.0,
         exploration_final_eps: float = 0.05,
-        pw_exploration: Optional[List[int, int]] = None,
+        pw_exploration: Optional[List[Tuple[int, int]]] = None,
         max_grad_norm: float = 10,
         stats_window_size: int = 100,
         tensorboard_log: Optional[str] = None,
