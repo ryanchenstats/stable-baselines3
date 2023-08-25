@@ -110,11 +110,10 @@ def get_pw_fn(step_values: List[Tuple[int, int]], end_fraction: float) -> Schedu
     :return: Peicewise schedule function.
     """
     def func(progress_remaining: float) -> float:
-        num_steps = len(step_values) - 1
         for time, epsilon in step_values:
-            if time > progress_remaining:
+            if time > 1 - progress_remaining:
                 return epsilon 
-        return step_values[num_steps][1]
+        return step_values[0][1]
 
     return func
 
